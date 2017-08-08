@@ -1,6 +1,7 @@
 import jsdom from 'mocha-jsdom';
 import React, { Component } from 'react';
-import { renderIntoDocument } from 'react-addons-test-utils';
+import { renderIntoDocument } from 'react-dom/test-utils';
+import reactCreateClass from 'create-react-class';
 import expect from 'expect';
 import getForceUpdate from '../src';
 
@@ -14,7 +15,7 @@ class Noop extends Component {
 
 class Modern extends Component {
   render() {
-    return <div calls={++calls}>{this.props.children}</div>;
+    return <div data-calls={++calls}>{this.props.children}</div>;
   }
 }
 
@@ -23,28 +24,28 @@ class ModernStrict extends Component {
     return false;
   }
   render() {
-    return <div calls={++calls}>{this.props.children}</div>;
+    return <div data-calls={++calls}>{this.props.children}</div>;
   }
 }
 
-const Classic = React.createClass({
+const Classic = reactCreateClass({
   render() {
-    return <div calls={++calls}>{this.props.children}</div>;
+    return <div data-calls={++calls}>{this.props.children}</div>;
   }
 });
 
-const ClassicStrict = React.createClass({
+const ClassicStrict = reactCreateClass({
   shouldComponentUpdate() {
     return false;
   },
 
   render() {
-    return <div calls={++calls}>{this.props.children}</div>;
+    return <div data-calls={++calls}>{this.props.children}</div>;
   }
 });
 
 const Pure = ({ children }) => (
-  <div calls={++calls}>{children}</div>
+  <div data-calls={++calls}>{children}</div>
 );
 
 class PureWrapper extends Component {
